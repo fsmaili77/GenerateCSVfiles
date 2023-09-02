@@ -27,10 +27,22 @@ namespace GenerateCSVfiles
             using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
 
             // Write the records to the CSV file
-            csv.WriteRecords(people);
+            // Shows only FirstName and LastName
+            // With this approach we can decide which data to print out in generated CSV file
+            csv.WriteField(nameof(Person.FirstName));
+            csv.WriteField(nameof(Person.LastName));
+            // csv.WriteField(nameof(Person.Age));
+            csv.NextRecord();
 
-            // Flush the writer to ensure all data is written
-            writer.Flush();
+            foreach (var person in people)
+            {
+                csv.WriteField(person.FirstName);
+                csv.WriteField(person.LastName);
+               // csv.WriteField(person.Age);
+                csv.NextRecord();
+                // Flush the writer to ensure all data is written
+                writer.Flush();
+            }
 
             // Get the byte array of the stream
             var bytes = stream.ToArray();
